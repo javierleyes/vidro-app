@@ -12,6 +12,24 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllers();
 
+        // Add CORS services
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+
+            options.AddPolicy("Production", policy =>
+            {
+                policy.WithOrigins("https://yourdomain.com", "https://www.yourdomain.com")
+                      .WithMethods("GET", "POST", "PUT", "DELETE")
+                      .WithHeaders("Content-Type", "Authorization");
+            });
+        });
+
         // Register PostgresSQL context.
         string postgresConnectionString = PostgresConnectionFactory.GetConnectionString(builder.Configuration);
         builder.Services.AddDbContext<VidroContext>(option => option.UseNpgsql(postgresConnectionString));
@@ -30,6 +48,14 @@ internal class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            // Use permissive CORS policy for development
+            app.UseCors("AllowAll");
+        }
+        else
+        {
+            // Use restrictive CORS policy for production
+            app.UseCors("Production");
         }
 
         app.UseHttpsRedirection();
