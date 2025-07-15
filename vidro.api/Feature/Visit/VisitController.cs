@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using vidro.api.Feature.Visit.Create.Model;
+using vidro.api.Feature.Visit.GetAll.Model;
 using vidro.api.Persistance;
 
 namespace vidro.api.Feature.Visit
@@ -23,9 +25,9 @@ namespace vidro.api.Feature.Visit
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CreateVisitReadModel>> CreateVisit([FromBody] CreateVisitWriteModel request)
+        public async Task<ActionResult<CreateVisitReadModel>> CreateVisitAsync([FromBody] CreateVisitWriteModel request, CancellationToken cancellationToken)
         {
-            var validationResult = await _createVisitValidator.ValidateAsync(request);
+            var validationResult = await _createVisitValidator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors.FirstOrDefault()?.ErrorMessage ?? "Invalid request");
@@ -39,8 +41,8 @@ namespace vidro.api.Feature.Visit
                 Phone = request.Phone
             };
 
-            await _context.Visits.AddAsync(visit).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.Visits.AddAsync(visit, cancellationToken).ConfigureAwait(false);
+            await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             var response = new CreateVisitReadModel
             {
@@ -51,7 +53,29 @@ namespace vidro.api.Feature.Visit
                 Phone = visit.Phone,
             };
 
-            return CreatedAtAction(nameof(CreateVisit), new { id = visit.Id }, response);
+            return CreatedAtAction(nameof(CreateVisitAsync), new { id = visit.Id }, response);
+        }
+
+        [HttpGet]
+        [Route("/visits")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<VisitReadModel>>> GetAllVisitsAsync(CancellationToken cancellationToken)
+        {
+            var visits = await _context.Visits
+                .Where(v => !v.IsDeleted)
+                .Select(v => new VisitReadModel
+                {
+                    Id = v.Id,
+                    Date = v.Date,
+                    Address = v.Address,
+                    Name = v.Name,
+                    Phone = v.Phone,
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return Ok(visits);
         }
     }
 }
