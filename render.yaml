@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: vidro-api
+    env: docker
+    dockerfilePath: ./vidro.api/Dockerfile
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:$PORT
+      - key: ConnectionStrings__VidroConnection
+        fromDatabase:
+          name: vidro-postgres
+          property: connectionString
+  - type: pserv
+    name: vidro-postgres
+    env: docker
+    dockerfilePath: ./postgres.Dockerfile
+    dockerContext: .
+    plan: starter
+    disk:
+      name: postgres-data
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 1
+    envVars:
+      - key: POSTGRES_DB
+        value: vidrodb
+      - key: POSTGRES_USER
+        value: admin
+      - key: POSTGRES_PASSWORD
+        generateValue: true

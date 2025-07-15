@@ -12,6 +12,9 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllers();
 
+        // Add health checks
+        builder.Services.AddHealthChecks();
+
         // Add CORS services
         builder.Services.AddCors(options =>
         {
@@ -58,9 +61,19 @@ internal class Program
             app.UseCors("Production");
         }
 
-        app.UseHttpsRedirection();
+        // Don't redirect to HTTPS on Render as it handles SSL termination
+        if (!app.Environment.IsProduction())
+        {
+            app.UseHttpsRedirection();
+        }
 
         app.UseAuthorization();
+
+        // Add health check endpoint
+        app.MapHealthChecks("/health");
+
+        // Add a simple root endpoint for health checks
+        app.MapGet("/", () => "Vidro API is running!");
 
         app.MapControllers();
 
