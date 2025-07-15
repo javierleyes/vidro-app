@@ -1,4 +1,4 @@
-namespace vidro.api.Feature.Visit.GetAll.Model
+namespace vidro.api.Feature.Visit.Model
 {
     public class VisitReadModel
     {

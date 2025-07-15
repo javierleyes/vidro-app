@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using vidro.api.Feature.Visit.Create.Model;
-using vidro.api.Feature.Visit.GetAll.Model;
+using vidro.api.Feature.Visit.Model;
 using vidro.api.Persistance;
 
 namespace vidro.api.Feature.Visit
@@ -18,6 +18,56 @@ namespace vidro.api.Feature.Visit
         {
             _context = context;
             _createVisitValidator = createVisitValidator;
+        }
+
+        [HttpGet]
+        [Route("/visits/{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<VisitReadModel>> GetVisitByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var visit = await _context.Visits
+                .Where(v => v.Id == id && !v.IsDeleted)
+                .Select(v => new VisitReadModel
+                {
+                    Id = v.Id,
+                    Date = v.Date,
+                    Address = v.Address,
+                    Name = v.Name,
+                    Phone = v.Phone,
+                })
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            if (visit == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(visit);
+        }
+
+        [HttpGet]
+        [Route("/visits")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<VisitReadModel>>> GetAllVisitsAsync(CancellationToken cancellationToken)
+        {
+            var visits = await _context.Visits
+                .Where(v => !v.IsDeleted)
+                .Select(v => new VisitReadModel
+                {
+                    Id = v.Id,
+                    Date = v.Date,
+                    Address = v.Address,
+                    Name = v.Name,
+                    Phone = v.Phone,
+                })
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return Ok(visits);
         }
 
         [HttpPost]
@@ -53,29 +103,7 @@ namespace vidro.api.Feature.Visit
                 Phone = visit.Phone,
             };
 
-            return CreatedAtAction(nameof(CreateVisitAsync), new { id = visit.Id }, response);
-        }
-
-        [HttpGet]
-        [Route("/visits")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<VisitReadModel>>> GetAllVisitsAsync(CancellationToken cancellationToken)
-        {
-            var visits = await _context.Visits
-                .Where(v => !v.IsDeleted)
-                .Select(v => new VisitReadModel
-                {
-                    Id = v.Id,
-                    Date = v.Date,
-                    Address = v.Address,
-                    Name = v.Name,
-                    Phone = v.Phone,
-                })
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            return Ok(visits);
+            return Created($"/visits/{response.Id}", response);
         }
     }
 }
