@@ -26,6 +26,8 @@ namespace vidro.api.Extension
                 throw new InvalidOperationException("No database connection string found. Check your configuration or environment variables.");
             }
             
+            Console.WriteLine($"Using connection string: {connectionString}");
+
             return connectionString;
         }
         
