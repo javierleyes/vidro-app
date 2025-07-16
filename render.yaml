@@ -15,10 +15,6 @@ services:
         fromDatabase:
           name: vidro-postgres
           property: connectionString
-      - key: DATABASE_URL
-        fromDatabase:
-          name: vidro-postgres
-          property: connectionString
 
 databases:
   - name: vidro-postgres

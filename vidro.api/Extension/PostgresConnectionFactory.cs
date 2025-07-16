@@ -6,9 +6,10 @@ namespace vidro.api.Extension
     {
         public static string GetConnectionString(IConfiguration configuration)
         {
-            // Try to get connection string from configuration
+            // Try to get connection string from configuration (localhost)
             var connectionString = configuration.GetConnectionString("VidroConnection");
 
+            // If not found, try to get it from environment variables (Render)
             if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgresql://"))
             {
                 connectionString = ConvertPostgresUrlToConnectionString(connectionString);
@@ -19,8 +20,6 @@ namespace vidro.api.Extension
                 throw new InvalidOperationException("No database connection string found. Check your configuration or environment variables.");
             }
 
-            Console.WriteLine($"Using connection string: {connectionString}");
-
             return connectionString;
         }
 
@@ -29,13 +28,6 @@ namespace vidro.api.Extension
             try
             {
                 var uri = new Uri(postgresUrl);
-
-                Console.WriteLine($"Host: {uri.Host}");
-                Console.WriteLine($"Database: {uri.AbsolutePath.TrimStart('/')}");
-                Console.WriteLine($"Username: {uri.UserInfo.Split(':')[0]}");
-                Console.WriteLine($"Password: {uri.UserInfo.Split(':')[1]}");
-                //Console.WriteLine($"Port: {uri.Port}");
-
                 var connectionStringBuilder = new NpgsqlConnectionStringBuilder
                 {
                     Host = uri.Host,
