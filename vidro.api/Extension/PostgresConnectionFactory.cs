@@ -33,6 +33,8 @@ namespace vidro.api.Extension
 
         private static string ConvertPostgresUrlToConnectionString(string postgresUrl)
         {
+            Console.WriteLine($"1.Using connection string: {postgresUrl}");
+
             try
             {
                 var uri = new Uri(postgresUrl);
