@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: vidro-api
+    env: docker
+    dockerfilePath: ./vidro.api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:$PORT
+      - key: ConnectionStrings__VidroConnection
+        fromDatabase:
+          name: vidro-postgres
+          property: connectionString
+
+databases:
+  - name: vidro-postgres
+    databaseName: vidrodb
+    user: admin
+    plan: free
