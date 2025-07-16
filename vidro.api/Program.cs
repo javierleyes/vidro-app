@@ -27,9 +27,17 @@ internal class Program
 
             options.AddPolicy("Production", policy =>
             {
-                policy.WithOrigins("https://yourdomain.com", "https://www.yourdomain.com")
-                      .WithMethods("GET", "POST", "PUT", "DELETE")
-                      .WithHeaders("Content-Type", "Authorization");
+                policy.WithOrigins(
+                        "https://yourdomain.com", 
+                        "https://www.yourdomain.com",
+                        "http://localhost:8081",
+                        "http://localhost:3000",
+                        "http://127.0.0.1:8081",
+                        "http://127.0.0.1:3000"
+                      )
+                      .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                      .WithHeaders("Content-Type", "Authorization")
+                      .AllowCredentials();
             });
         });
 
