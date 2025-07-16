@@ -37,7 +37,11 @@ namespace vidro.api.Extension
             {
                 var uri = new Uri(postgresUrl);
 
-                Console.WriteLine($"1.Using connection string: {uri.ToString}");
+                Console.WriteLine($"Host: {uri.Host}");
+                Console.WriteLine($"Port: {uri.Port}");
+                Console.WriteLine($"Database: {uri.AbsolutePath.TrimStart('/')}");
+                Console.WriteLine($"Username: {uri.UserInfo.Split(':')[0]}");
+                Console.WriteLine($"Password: {uri.UserInfo.Split(':')[1]}");
 
                 var connectionStringBuilder = new NpgsqlConnectionStringBuilder
                 {
