@@ -34,7 +34,7 @@ namespace vidro.api.Extension
                 Console.WriteLine($"Database: {uri.AbsolutePath.TrimStart('/')}");
                 Console.WriteLine($"Username: {uri.UserInfo.Split(':')[0]}");
                 Console.WriteLine($"Password: {uri.UserInfo.Split(':')[1]}");
-                Console.WriteLine($"Port: {uri.Port}");
+                //Console.WriteLine($"Port: {uri.Port}");
 
                 var connectionStringBuilder = new NpgsqlConnectionStringBuilder
                 {
