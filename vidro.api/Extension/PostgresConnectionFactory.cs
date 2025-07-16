@@ -16,7 +16,7 @@ namespace vidro.api.Extension
             }
 
             // If we have a DATABASE_URL, it might be in PostgreSQL URL format, convert it
-            if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgres://"))
+            if (!string.IsNullOrEmpty(connectionString))
             {
                 connectionString = ConvertPostgresUrlToConnectionString(connectionString);
             }
