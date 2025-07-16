@@ -105,5 +105,28 @@ namespace vidro.api.Feature.Visit
 
             return Created($"/visits/{response.Id}", response);
         }
+
+        [HttpDelete]
+        [Route("/visits/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteVisitAsync(int id, CancellationToken cancellationToken)
+        {
+            var visit = await _context.Visits
+                .Where(v => v.Id == id && !v.IsDeleted)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            if (visit is null)
+            {
+                return NotFound();
+            }
+
+            visit.IsDeleted = true;
+
+            await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            return NoContent();
+        }
     }
 }

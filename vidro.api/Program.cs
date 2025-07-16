@@ -32,8 +32,6 @@ internal class Program
             options.AddPolicy("Production", policy =>
             {
                 policy.WithOrigins(
-                        "https://yourdomain.com", 
-                        "https://www.yourdomain.com",
                         "http://localhost:8081",
                         "http://localhost:3000",
                         "http://127.0.0.1:8081",
