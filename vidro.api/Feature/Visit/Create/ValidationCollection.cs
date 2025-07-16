@@ -12,7 +12,7 @@ namespace vidro.api.Feature.Visit.Create
                 RuleFor(x => x.Date)
                     .NotEmpty()
                     .WithMessage(VisitErrors.DateIsRequired.ToString())
-                    .GreaterThan(DateTimeOffset.Now.AddMinutes(-5))
+                    .Must(date => date.Day >= DateTimeOffset.Now.Day)
                     .WithMessage(VisitErrors.DateCannotBeInThePast.ToString());
 
                 RuleFor(x => x.Name)
