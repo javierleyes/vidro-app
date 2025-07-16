@@ -15,16 +15,9 @@ services:
         fromDatabase:
           name: vidro-postgres
           property: connectionString
-  - type: pserv
-    name: vidro-postgres
-    env: docker
-    dockerfilePath: ./postgres.Dockerfile
-    dockerContext: .
+
+databases:
+  - name: vidro-postgres
+    databaseName: vidrodb
+    user: admin
     plan: free
-    envVars:
-      - key: POSTGRES_DB
-        value: vidrodb
-      - key: POSTGRES_USER
-        value: admin
-      - key: POSTGRES_PASSWORD
-        generateValue: true
