@@ -8,14 +8,8 @@ namespace vidro.api.Extension
         {
             // Try to get connection string from configuration
             var connectionString = configuration.GetConnectionString("VidroConnection");
-            
-            // If not found, try to get from environment variable directly
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__VidroConnection");
-            }
-            
-            // If still not found, try alternative environment variable names
+                       
+            // If not found, try alternative environment variable names
             if (string.IsNullOrEmpty(connectionString))
             {
                 connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
@@ -50,7 +44,7 @@ namespace vidro.api.Extension
                     SslMode = SslMode.Require
                 };
                 
-                return connectionStringBuilder.ToString();
+                return connectionStringBuilder.ConnectionString;
             }
             catch (Exception ex)
             {
