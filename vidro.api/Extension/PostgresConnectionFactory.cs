@@ -46,7 +46,7 @@ namespace vidro.api.Extension
                 var connectionStringBuilder = new NpgsqlConnectionStringBuilder
                 {
                     Host = uri.Host,
-                    Port = uri.Port,
+                    Port = 5432,
                     Database = uri.AbsolutePath.TrimStart('/'),
                     Username = uri.UserInfo.Split(':')[0],
                     Password = uri.UserInfo.Split(':')[1],
