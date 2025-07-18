@@ -11,7 +11,7 @@ namespace vidro.api.Feature.Visit
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VisitController(VidroContext context, IValidator<CreateVisitWriteModel> createVisitValidator, IValidator<UpdateVisitWriteModel> updateVisitValidator) : ControllerBase
+    public class VisitController(VidroContext vidroContext, IValidator<CreateVisitWriteModel> createVisitValidator, IValidator<UpdateVisitWriteModel> updateVisitValidator) : ControllerBase
     {
         [HttpGet]
         [Route("/visits/{id}")]
@@ -20,7 +20,7 @@ namespace vidro.api.Feature.Visit
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<VisitReadModel>> GetVisitByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var visit = await context.Visits
+            var visit = await vidroContext.Visits
                 .Where(v => v.Id == id && !v.IsDeleted)
                 .Select(v => new VisitReadModel
                 {
@@ -46,10 +46,16 @@ namespace vidro.api.Feature.Visit
         [Route("/visits")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<VisitReadModel>>> GetAllVisitsAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<VisitReadModel>>> GetAllVisitsAsync([FromQuery] VisitStatus? status, CancellationToken cancellationToken)
         {
-            var visits = await context.Visits
-                .Where(v => !v.IsDeleted)
+            var query = vidroContext.Visits.Where(v => !v.IsDeleted);
+
+            if (status.HasValue)
+            {
+                query = query.Where(v => v.Status == status.Value);
+            }
+
+            var visits = await query
                 .Select(v => new VisitReadModel
                 {
                     Id = v.Id,
@@ -86,8 +92,8 @@ namespace vidro.api.Feature.Visit
                 Phone = request.Phone
             };
 
-            await context.Visits.AddAsync(visit, cancellationToken).ConfigureAwait(false);
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await vidroContext.Visits.AddAsync(visit, cancellationToken).ConfigureAwait(false);
+            await vidroContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             var response = new CreateVisitReadModel
             {
@@ -102,7 +108,7 @@ namespace vidro.api.Feature.Visit
         }
 
         [HttpPatch]
-        [Route("/visits/{id}/status")]
+        [Route("/visits/{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -115,7 +121,7 @@ namespace vidro.api.Feature.Visit
                 return BadRequest(validationResult.Errors.FirstOrDefault()?.ErrorMessage ?? "Invalid request");
             }
 
-            var visit = await context.Visits
+            var visit = await vidroContext.Visits
                 .Where(v => v.Id == id && !v.IsDeleted)
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -127,7 +133,7 @@ namespace vidro.api.Feature.Visit
 
             visit.Status = request.Status;
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await vidroContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             var response = new VisitReadModel
             {
@@ -148,7 +154,7 @@ namespace vidro.api.Feature.Visit
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteVisitAsync(int id, CancellationToken cancellationToken)
         {
-            var visit = await context.Visits
+            var visit = await vidroContext.Visits
                 .Where(v => v.Id == id && !v.IsDeleted)
                 .FirstOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -160,7 +166,7 @@ namespace vidro.api.Feature.Visit
 
             visit.IsDeleted = true;
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await vidroContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return NoContent();
         }
