@@ -1,4 +1,6 @@
-﻿namespace vidro.api.Domain
+﻿using vidro.api.Status;
+
+namespace vidro.api.Domain
 {
     public class Visit : Entity<int>
     {
@@ -9,5 +11,7 @@
         public string Name { get; set; }
 
         public string Phone { get; set; }
+
+        public VisitStatus Status { get; set; } = VisitStatus.Pending;
     }
 }

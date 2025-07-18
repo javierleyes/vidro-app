@@ -29,6 +29,7 @@ namespace vidro.api.Persistance.Convention
             builder.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .HasColumnName("phone");
+            builder.Property(e => e.Status).HasColumnName("visit_status_id");
         }
     }
 }

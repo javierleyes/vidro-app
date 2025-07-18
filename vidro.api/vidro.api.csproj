@@ -25,7 +25,6 @@
     <Folder Include="Feature\Visit\Delete\" />
     <Folder Include="Feature\Visit\GetAll\" />
     <Folder Include="Feature\Visit\GetById\" />
-    <Folder Include="Feature\Visit\Update\" />
   </ItemGroup>
 
 </Project>

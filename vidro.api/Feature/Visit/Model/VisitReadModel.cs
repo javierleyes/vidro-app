@@ -1,3 +1,5 @@
+using vidro.api.Status;
+
 namespace vidro.api.Feature.Visit.Model
 {
     public class VisitReadModel
@@ -11,5 +13,7 @@ namespace vidro.api.Feature.Visit.Model
         public string Name { get; set; }
 
         public string Phone { get; set; }
+
+        public VisitStatus Status { get; set; }
     }
 }

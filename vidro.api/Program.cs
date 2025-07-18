@@ -61,6 +61,7 @@ internal class Program
 
         // Add FluentValidation validators
         builder.Services.AddScoped<IValidator<vidro.api.Feature.Visit.Create.Model.CreateVisitWriteModel>, vidro.api.Feature.Visit.Create.ValidationCollection.CreateVisitRequestValidator>();
+        builder.Services.AddScoped<IValidator<vidro.api.Feature.Visit.Patch.Model.UpdateVisitWriteModel>, vidro.api.Feature.Visit.Patch.ValidationCollection.UpdateVisitRequestValidator>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -125,12 +126,10 @@ internal class Program
             {
                 var connString = app.Configuration.GetConnectionString("VidroConnection");
                 var envVar = Environment.GetEnvironmentVariable("ConnectionStrings__VidroConnection");
-                var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
                 
                 return new { 
                     ConfigConnectionString = !string.IsNullOrEmpty(connString) ? "SET" : "NOT SET",
                     EnvConnectionString = !string.IsNullOrEmpty(envVar) ? "SET" : "NOT SET",
-                    DatabaseUrl = !string.IsNullOrEmpty(dbUrl) ? "SET" : "NOT SET",
                     Environment = app.Environment.EnvironmentName
                 };
             });
