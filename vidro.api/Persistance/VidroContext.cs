@@ -19,5 +19,7 @@ namespace vidro.api.Persistance
         }
 
         public virtual DbSet<Visit> Visits { get; set; }
+
+        public virtual DbSet<Glass> Glasses { get; set; }
     }
 }
