@@ -62,6 +62,7 @@ internal class Program
         // Add FluentValidation validators
         builder.Services.AddScoped<IValidator<vidro.api.Feature.Visit.Create.Model.CreateVisitWriteModel>, vidro.api.Feature.Visit.Create.ValidationCollection.CreateVisitRequestValidator>();
         builder.Services.AddScoped<IValidator<vidro.api.Feature.Visit.Patch.Model.UpdateVisitWriteModel>, vidro.api.Feature.Visit.Patch.ValidationCollection.UpdateVisitRequestValidator>();
+        builder.Services.AddScoped<IValidator<vidro.api.Feature.Glass.Patch.Model.UpdateGlassPriceWriteModel>, vidro.api.Feature.Glass.Patch.ValidationCollection.UpdateGlassPriceRequestValidator>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
