@@ -12,7 +12,7 @@ namespace vidro.api.Feature.Visit.Patch
             {
                 RuleFor(x => x.Status)
                     .Equal(VisitStatus.Completed)
-                    .WithMessage(VisitErrors.InvalidStatus.ToString());
+                    .WithMessage(VisitError.InvalidStatus.ToString());
             }
         }
     }

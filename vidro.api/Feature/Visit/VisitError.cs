@@ -2,7 +2,7 @@
 
 namespace vidro.api.Feature.Visit
 {
-    public static class VisitErrors
+    public static class VisitError
     {
         public static readonly ErrorCode DateIsRequired = new(MajorErrorCode.Visit, 1, "Date is required");
 

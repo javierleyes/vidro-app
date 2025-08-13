@@ -11,25 +11,25 @@ namespace vidro.api.Feature.Visit.Create
             {
                 RuleFor(x => x.Date)
                     .NotEmpty()
-                    .WithMessage(VisitErrors.DateIsRequired.ToString())
+                    .WithMessage(VisitError.DateIsRequired.ToString())
                     .Must(date => date.Day >= DateTimeOffset.Now.Day)
-                    .WithMessage(VisitErrors.DateCannotBeInThePast.ToString());
+                    .WithMessage(VisitError.DateCannotBeInThePast.ToString());
 
                 RuleFor(x => x.Name)
                     .NotEmpty()
-                    .WithMessage(VisitErrors.NameIsRequired.ToString())
+                    .WithMessage(VisitError.NameIsRequired.ToString())
                     .MaximumLength(20)
-                    .WithMessage(VisitErrors.NameCannotExceedLength.ToString());
+                    .WithMessage(VisitError.NameCannotExceedLength.ToString());
 
                 RuleFor(x => x.Address)
                     .NotEmpty()
-                    .WithMessage(VisitErrors.AddressIsRequired.ToString())
+                    .WithMessage(VisitError.AddressIsRequired.ToString())
                     .MaximumLength(50)
-                    .WithMessage(VisitErrors.AddressCannotExceedLength.ToString());
+                    .WithMessage(VisitError.AddressCannotExceedLength.ToString());
 
                 RuleFor(x => x.Phone)
                     .NotEmpty()
-                    .WithMessage(VisitErrors.PhoneIsRequired.ToString());
+                    .WithMessage(VisitError.PhoneIsRequired.ToString());
             }
         }
     }
