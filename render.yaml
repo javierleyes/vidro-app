@@ -18,6 +18,6 @@ services:
 
 databases:
   - name: vidro-postgres
-    databaseName: vidrodb_tc22
+    databaseName: vidrodb
     user: admin
     plan: free
