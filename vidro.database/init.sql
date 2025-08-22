@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS visit (
 CREATE TABLE IF NOT EXISTS glass (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
+    price_in_transparent DECIMAL(10,2) NULL,
+    price_in_color DECIMAL(10,2) NULL,
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
     create_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     modify_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -35,20 +36,20 @@ INSERT INTO visit_status (id, name)
 SELECT 2, 'completed' WHERE NOT EXISTS (SELECT 1 FROM visit_status WHERE name = 'completed');
 
 -- Insert default glass values if they don't exist
-INSERT INTO glass (name, price) 
-SELECT 'Clear Glass', 15.50 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Clear Glass');
+INSERT INTO glass (name, price_in_transparent, price_in_color) 
+SELECT 'Clear Glass', 15.50, 20.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Clear Glass');
 
-INSERT INTO glass (name, price) 
-SELECT 'Tempered Glass', 25.75 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Tempered Glass');
+INSERT INTO glass (name, price_in_transparent, price_in_color) 
+SELECT 'Tempered Glass', 25.75, 30.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Tempered Glass');
 
-INSERT INTO glass (name, price) 
-SELECT 'Laminated Glass', 35.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Laminated Glass');
+INSERT INTO glass (name, price_in_transparent, price_in_color) 
+SELECT 'Laminated Glass', 35.00, 40.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Laminated Glass');
 
-INSERT INTO glass (name, price) 
+INSERT INTO glass (name, price_in_transparent) 
 SELECT 'Frosted Glass', 22.30 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Frosted Glass');
 
-INSERT INTO glass (name, price) 
-SELECT 'Tinted Glass', 28.90 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Tinted Glass');
+INSERT INTO glass (name, price_in_transparent, price_in_color) 
+SELECT 'Tinted Glass', 28.90, 33.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Tinted Glass');
 
 -- Create index on Date for better query performance
 CREATE INDEX IX_Visit_Date ON visit (Date);

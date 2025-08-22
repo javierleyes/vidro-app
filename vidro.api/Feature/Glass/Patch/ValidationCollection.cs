@@ -9,9 +9,19 @@ namespace vidro.api.Feature.Glass.Patch
         {
             public UpdateGlassPriceRequestValidator()
             {
-                RuleFor(x => x.Price)
-                    .GreaterThan(0)
-                    .WithMessage(GlassError.InvalidPrice.ToString());
+                When(x => x.PriceTransparent.HasValue, () =>
+                {
+                    RuleFor(x => x.PriceTransparent)
+                        .GreaterThan(0)
+                        .WithMessage(GlassError.InvalidPrice.ToString());
+                });
+
+                When(x => x.PriceColor.HasValue, () =>
+                {
+                    RuleFor(x => x.PriceColor)
+                        .GreaterThan(0)
+                        .WithMessage(GlassError.InvalidPrice.ToString());
+                });
             }
         }
     }

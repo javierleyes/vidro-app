@@ -4,7 +4,9 @@ public class Glass : Entity<Guid>
 {
     public string Name { get; set; }
 
-    public decimal Price { get; set; }
+    public decimal? PriceTransparent { get; set; }
+
+    public decimal? PriceColor { get; set; }
 
     public DateTime? ModifyDate { get; set; }
 }

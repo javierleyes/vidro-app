@@ -23,9 +23,12 @@ namespace vidro.api.Persistance.Convention
             builder.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
-            builder.Property(e => e.Price)
+            builder.Property(e => e.PriceTransparent)
                 .HasPrecision(10, 2)
-                .HasColumnName("price");
+                .HasColumnName("price_in_transparent");
+            builder.Property(e => e.PriceColor)
+                .HasPrecision(10, 2)
+                .HasColumnName("price_in_color");
         }
     }
 }
