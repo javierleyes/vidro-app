@@ -36,20 +36,35 @@ INSERT INTO visit_status (id, name)
 SELECT 2, 'completed' WHERE NOT EXISTS (SELECT 1 FROM visit_status WHERE name = 'completed');
 
 -- Insert default glass values if they don't exist
-INSERT INTO glass (name, price_in_transparent, price_in_color) 
-SELECT 'Clear Glass', 15.50, 20.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Clear Glass');
-
-INSERT INTO glass (name, price_in_transparent, price_in_color) 
-SELECT 'Tempered Glass', 25.75, 30.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Tempered Glass');
-
-INSERT INTO glass (name, price_in_transparent, price_in_color) 
-SELECT 'Laminated Glass', 35.00, 40.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Laminated Glass');
+INSERT INTO glass (name, price_in_transparent) 
+SELECT 'Sencillo 2 mm', 21000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Sencillo 2 mm');
 
 INSERT INTO glass (name, price_in_transparent) 
-SELECT 'Frosted Glass', 22.30 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Frosted Glass');
+SELECT 'Doble 3 mm', 25000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Doble 3 mm');
 
 INSERT INTO glass (name, price_in_transparent, price_in_color) 
-SELECT 'Tinted Glass', 28.90, 33.00 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Tinted Glass');
+SELECT 'Triple 4 mm', 30500, 51000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Triple 4 mm');
+
+INSERT INTO glass (name, price_in_transparent) 
+SELECT 'Cristal 5 mm', 41000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Cristal 5 mm');
+
+INSERT INTO glass (name, price_in_transparent, price_in_color) 
+SELECT 'Cristal 6 mm', 53000, 77000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Cristal 6 mm');
+
+INSERT INTO glass (name, price_in_transparent) 
+SELECT 'Sencillo difuso 2 mm (A.R)', 34000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Sencillo difuso 2 mm (A.R)');
+
+INSERT INTO glass (name, price_in_transparent) 
+SELECT 'Stop sol 4 mm (Espejado)', 147000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Stop sol 4 mm (Espejado)');
+
+INSERT INTO glass (name, price_in_transparent) 
+SELECT 'Fantasia 4 mm', 42000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Fantasia 4 mm');
+
+INSERT INTO glass (name, price_in_transparent) 
+SELECT 'Armado 6 mm', 89000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Armado 6 mm');
+
+INSERT INTO glass (name, price_in_color) 
+SELECT 'Martele 4 mm', 72000 WHERE NOT EXISTS (SELECT 1 FROM glass WHERE name = 'Martele 4 mm');
 
 -- Create index on Date for better query performance
 CREATE INDEX IX_Visit_Date ON visit (Date);
