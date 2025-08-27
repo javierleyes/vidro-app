@@ -22,6 +22,7 @@ namespace vidro.api.Feature.Glass
                 .Select(g => new GlassReadModel
                 {
                     Id = g.Id,
+                    Order = g.Order,
                     Name = g.Name,
                     PriceTransparent = g.PriceTransparent,
                     PriceColor = g.PriceColor,
@@ -56,8 +57,8 @@ namespace vidro.api.Feature.Glass
                 return NotFound(GlassError.GlassNotFound.ToString());
             }
 
-            glass.PriceTransparent = request.PriceTransparent ?? 0;
-            glass.PriceColor = request.PriceColor ?? 0;
+            glass.PriceTransparent = request.PriceTransparent;
+            glass.PriceColor = request.PriceColor;
             glass.ModifyDate = DateTime.UtcNow;
 
             await vidroContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -65,6 +66,7 @@ namespace vidro.api.Feature.Glass
             var response = new GlassReadModel
             {
                 Id = glass.Id,
+                Order = glass.Order,
                 Name = glass.Name,
                 PriceTransparent = glass.PriceTransparent,
                 PriceColor = glass.PriceColor,

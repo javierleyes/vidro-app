@@ -11,6 +11,7 @@ namespace vidro.api.Persistance.Convention
             builder.ToTable("glass");
 
             builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Order).HasColumnName("order");
             builder.Property(e => e.CreateDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnName("create_date");
